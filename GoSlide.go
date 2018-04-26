@@ -48,6 +48,20 @@ func drawBoard() {
 	fmt.Println("+---------+")
 }
 
+func checkMoveLegal(move int) bool {
+	switch move {
+	case 0:
+		return blankYPos < 2
+	case 1:
+		return blankXPos < 2
+	case 2:
+		return blankXPos > 0
+	case 3:
+		return blankYPos > 0
+	}
+	return false
+}
+
 func main() {
 	err := termbox.Init()
 	if err != nil {
