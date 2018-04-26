@@ -10,7 +10,11 @@ func drawBoardLine(boardLine [3]*tile) {
 	fmt.Print("|")
 	for _, t := range boardLine {
 		fmt.Print(" ")
-		fmt.Print(*t)
+		if *t == 0 {
+			fmt.Print(" ")
+		} else {
+			fmt.Print(*t)
+		}
 		fmt.Print(" ")
 	}
 	fmt.Print("|\n")
