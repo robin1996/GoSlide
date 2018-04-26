@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	
+	"github.com/nsf/termbox-go"
+)
 
 type tile = int
 
@@ -29,7 +33,35 @@ func drawBoard(gameBoard board) {
 }
 
 func main() {
+	err := termbox.Init()
+	if err != nil {
+		panic(err)
+	}
 	var tiles = [9]tile{0, 1, 2, 3, 4, 5, 6, 7, 8}
 	var testBoard = board{{&tiles[0], &tiles[1], &tiles[2]}, {&tiles[3], &tiles[4], &tiles[5]}, {&tiles[6], &tiles[7], &tiles[8]}}
-	drawBoard(testBoard)
+	for {
+		keyPress := termbox.PollEvent()
+		switch keyPress.Type {
+		case termbox.EventKey:
+			switch keyPress.Key {
+			case termbox.KeyArrowUp:
+				fmt.Println("up")
+			case termbox.KeyArrowDown:
+				fmt.Println("down")
+			case termbox.KeyArrowLeft:
+				fmt.Println("left")
+			case termbox.KeyArrowRight:
+				fmt.Println("right")
+			case termbox.KeyEsc:
+				return
+			case termbox.KeyCtrlC:
+				return
+			default:
+				fmt.Println("other")
+			}
+		case termbox.EventError:
+			panic(keyPress.Err)
+			}
+		}
+		drawBoard(testBoard)
 }
