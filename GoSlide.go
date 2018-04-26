@@ -6,18 +6,28 @@ import (
 	"github.com/nsf/termbox-go"
 )
 
+// game move
+const (
+	up = iota // 0
+	left // 1
+	right // 2
+	down // 3
+)
+
 type tile = int
 
-type board = [3][3]*tile
+type square = *tile
 
-func drawBoardLine(boardLine [3]*tile) {
+type board = [3][3]square
+
+func drawBoardLine(boardLine [3]square) {
 	fmt.Print("|")
-	for _, t := range boardLine {
+	for _, s := range boardLine {
 		fmt.Print(" ")
-		if *t == 0 {
+		if *s == 0 {
 			fmt.Print(" ")
 		} else {
-			fmt.Print(*t)
+			fmt.Print(*s)
 		}
 		fmt.Print(" ")
 	}
@@ -62,6 +72,6 @@ func main() {
 		case termbox.EventError:
 			panic(keyPress.Err)
 			}
+			drawBoard(testBoard)
 		}
-		drawBoard(testBoard)
 }
