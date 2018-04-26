@@ -31,8 +31,8 @@ type board = [3][3]square
 func drawBoard() {
 	fmt.Println("+---------+")
 	for y, l := range gameBoard {
+		fmt.Print("|")
 		for x, s := range l {
-			fmt.Print("|")
 			fmt.Print(" ")
 			if *s == 0 {
 				fmt.Print(" ")
@@ -42,24 +42,41 @@ func drawBoard() {
 				fmt.Print(*s)
 			}
 			fmt.Print(" ")
-			fmt.Print("|\n")
 		}
+		fmt.Print("|\n")
 	}
 	fmt.Println("+---------+")
 }
 
 func checkMoveLegal(move int) bool {
 	switch move {
-	case 0:
+	case up:
 		return blankYPos < 2
-	case 1:
+	case left:
 		return blankXPos < 2
-	case 2:
+	case right:
 		return blankXPos > 0
-	case 3:
+	case down:
 		return blankYPos > 0
 	}
 	return false
+}
+
+func slide(move int) {
+	if checkMoveLegal(move) {
+		switch move {
+		case up:
+			gameBoard[blankYPos][blankXPos], gameBoard[blankYPos + 1][blankXPos] = gameBoard[blankYPos + 1][blankXPos], gameBoard[blankYPos][blankXPos]
+		case down:
+			gameBoard[blankYPos][blankXPos], gameBoard[blankYPos - 1][blankXPos] = gameBoard[blankYPos - 1][blankXPos], gameBoard[blankYPos][blankXPos]
+		case right:
+			gameBoard[blankYPos][blankXPos], gameBoard[blankYPos][blankXPos - 1] = gameBoard[blankYPos][blankXPos - 1], gameBoard[blankYPos][blankXPos]
+		case left:
+			gameBoard[blankYPos][blankXPos], gameBoard[blankYPos][blankXPos + 1] = gameBoard[blankYPos][blankXPos + 1], gameBoard[blankYPos][blankXPos]
+		}
+	} else {
+		fmt.Println("Illegal move")
+	}
 }
 
 func main() {
@@ -68,18 +85,19 @@ func main() {
 		panic(err)
 	}
 	for {
+		drawBoard()
 		keyPress := termbox.PollEvent()
 		switch keyPress.Type {
 		case termbox.EventKey:
 			switch keyPress.Key {
 			case termbox.KeyArrowUp:
-				fmt.Println("up")
+				slide(up)
 			case termbox.KeyArrowDown:
-				fmt.Println("down")
+				slide(down)
 			case termbox.KeyArrowLeft:
-				fmt.Println("left")
+				slide(left)
 			case termbox.KeyArrowRight:
-				fmt.Println("right")
+				slide(right)
 			case termbox.KeyEsc:
 				return
 			case termbox.KeyCtrlC:
@@ -90,6 +108,5 @@ func main() {
 		case termbox.EventError:
 			panic(keyPress.Err)
 			}
-			drawBoard()
 		}
 }
