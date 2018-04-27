@@ -16,30 +16,37 @@ const (
 
 var blankXPos int = 0
 var blankYPos int = 0
-var tiles = [9]tile{0, 1, 2, 3, 4, 5, 6, 7, 8}
-var gameBoard = board{{&tiles[0], &tiles[1], &tiles[2]}, 
-					  {&tiles[3], &tiles[4], &tiles[5]},
-					  {&tiles[6], &tiles[7], &tiles[8]}}
+//var tiles = [9]tile{0, 1, 2, 3, 4, 5, 6, 7, 8}
+//var gameBoard = board{{&tiles[0], &tiles[1], &tiles[2]}, 
+					  //{&tiles[3], &tiles[4], &tiles[5]},
+					  //{&tiles[6], &tiles[7], &tiles[8]}}
+var completedBoard = board{{0, 1, 2},
+						   {3, 4, 5},
+						   {6, 7, 8}}
+
+var gameBoard = completedBoard
 
 type tile = int
 
-type square = *tile
+//type square = *tile
 
-type board = [3][3]square
+//type board = [3][3]square
+
+type board = [3][3]tile
 
 // Also sets blank pos vars
 func drawBoard() {
 	fmt.Println("+---------+")
 	for y, l := range gameBoard {
 		fmt.Print("|")
-		for x, s := range l {
+		for x, t := range l {
 			fmt.Print(" ")
-			if *s == 0 {
+			if t == 0 {
 				fmt.Print(" ")
 				blankYPos = y
 				blankXPos = x
 			} else {
-				fmt.Print(*s)
+				fmt.Print(t)
 			}
 			fmt.Print(" ")
 		}
