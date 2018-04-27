@@ -63,19 +63,23 @@ func checkMoveLegal(move int) bool {
 }
 
 func slide(move int) {
+	switch move {
+	case up:
+		gameBoard[blankYPos][blankXPos], gameBoard[blankYPos + 1][blankXPos] = gameBoard[blankYPos + 1][blankXPos], gameBoard[blankYPos][blankXPos]
+	case down:
+		gameBoard[blankYPos][blankXPos], gameBoard[blankYPos - 1][blankXPos] = gameBoard[blankYPos - 1][blankXPos], gameBoard[blankYPos][blankXPos]
+	case right:
+		gameBoard[blankYPos][blankXPos], gameBoard[blankYPos][blankXPos - 1] = gameBoard[blankYPos][blankXPos - 1], gameBoard[blankYPos][blankXPos]
+	case left:
+		gameBoard[blankYPos][blankXPos], gameBoard[blankYPos][blankXPos + 1] = gameBoard[blankYPos][blankXPos + 1], gameBoard[blankYPos][blankXPos]
+	}
+}
+
+func playerMove(move int) {
 	if checkMoveLegal(move) {
-		switch move {
-		case up:
-			gameBoard[blankYPos][blankXPos], gameBoard[blankYPos + 1][blankXPos] = gameBoard[blankYPos + 1][blankXPos], gameBoard[blankYPos][blankXPos]
-		case down:
-			gameBoard[blankYPos][blankXPos], gameBoard[blankYPos - 1][blankXPos] = gameBoard[blankYPos - 1][blankXPos], gameBoard[blankYPos][blankXPos]
-		case right:
-			gameBoard[blankYPos][blankXPos], gameBoard[blankYPos][blankXPos - 1] = gameBoard[blankYPos][blankXPos - 1], gameBoard[blankYPos][blankXPos]
-		case left:
-			gameBoard[blankYPos][blankXPos], gameBoard[blankYPos][blankXPos + 1] = gameBoard[blankYPos][blankXPos + 1], gameBoard[blankYPos][blankXPos]
-		}
+		slide(move)
 	} else {
-		fmt.Println("Illegal move")
+		fmt.Println("Illegal move!")
 	}
 }
 
@@ -91,13 +95,13 @@ func main() {
 		case termbox.EventKey:
 			switch keyPress.Key {
 			case termbox.KeyArrowUp:
-				slide(up)
+				playerMove(up)
 			case termbox.KeyArrowDown:
-				slide(down)
+				playerMove(down)
 			case termbox.KeyArrowLeft:
-				slide(left)
+				playerMove(left)
 			case termbox.KeyArrowRight:
-				slide(right)
+				playerMove(right)
 			case termbox.KeyEsc:
 				return
 			case termbox.KeyCtrlC:
