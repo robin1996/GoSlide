@@ -18,10 +18,7 @@ const (
 
 var blankXPos int = 0
 var blankYPos int = 0
-//var tiles = [9]tile{0, 1, 2, 3, 4, 5, 6, 7, 8}
-//var gameBoard = board{{&tiles[0], &tiles[1], &tiles[2]}, 
-					  //{&tiles[3], &tiles[4], &tiles[5]},
-					  //{&tiles[6], &tiles[7], &tiles[8]}}
+
 var completedBoard = board{{'0', '1', '2'},
 						   {'3', '4', '5'},
 						   {'6', '7', '8'}}
@@ -30,44 +27,23 @@ var gameBoard = completedBoard
 
 type tile = rune
 
-//type square = *tile
-
-//type board = [3][3]square
-
 type board = [3][3]tile
 
 // Also sets blank pos vars
-//func drawBoard() {
-	//fmt.Println("+---------+")
-	//for y, l := range gameBoard {
-		//fmt.Print("|")
-		//for x, t := range l {
-			//fmt.Print(" ")
-			//if t == 0 {
-				//fmt.Print(" ")
-				//blankYPos = y
-				//blankXPos = x
-			//} else {
-				//fmt.Print(t)
-			//}
-			//fmt.Print(" ")
-		//}
-		//fmt.Print("|\n")
-	//}
-	//fmt.Println("+---------+")
-//}
-
-
-// Also sets blank pos vars
 func drawBoard(xPos, yPos int) {
+	for y := 0; y < 5; y++ {
+		for x := 0; x < 9; x++ {
+			termbox.SetCell(xPos + x, yPos + y, ' ', termbox.ColorDefault, 0xC618)
+		}
+	}
 	for y, l := range gameBoard {
 		for x, t := range l {
 			if t == completedBoard[0][0] {
-				termbox.SetCell(xPos + x, yPos + y, ' ', termbox.ColorBlack, 0xC618)
+				termbox.SetCell(xPos + 2 + 2 * x, yPos + 1 + y, ' ', termbox.ColorBlack, 0xC618)
 				blankYPos = y
 				blankXPos = x
 			} else {
-				termbox.SetCell(xPos + x, yPos + y, t, termbox.ColorBlack, 0xC618)
+				termbox.SetCell(xPos + 2 + 2 * x, yPos + 1 + y, t, termbox.ColorBlack, 0xC618)
 			}
 		}
 	}
@@ -75,7 +51,7 @@ func drawBoard(xPos, yPos int) {
 
 func draw() {
 	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
-	drawBoard(3, 3)
+	drawBoard(2, 1)
 	termbox.Flush()
 }
 
@@ -110,7 +86,7 @@ func playerMove(move int) {
 	if checkMoveLegal(&move) {
 		slide(&move)
 	} else {
-		fmt.Println("Illegal move!")
+		// Illegal Move
 	}
 }
 
