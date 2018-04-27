@@ -55,8 +55,8 @@ func drawBoard() {
 	fmt.Println("+---------+")
 }
 
-func checkMoveLegal(move int) bool {
-	switch move {
+func checkMoveLegal(move *int) bool {
+	switch *move {
 	case up:
 		return blankYPos < 2
 	case left:
@@ -69,8 +69,8 @@ func checkMoveLegal(move int) bool {
 	return false
 }
 
-func slide(move int) {
-	switch move {
+func slide(move *int) {
+	switch *move {
 	case up:
 		gameBoard[blankYPos][blankXPos], gameBoard[blankYPos + 1][blankXPos] = gameBoard[blankYPos + 1][blankXPos], gameBoard[blankYPos][blankXPos]
 	case down:
@@ -83,8 +83,8 @@ func slide(move int) {
 }
 
 func playerMove(move int) {
-	if checkMoveLegal(move) {
-		slide(move)
+	if checkMoveLegal(&move) {
+		slide(&move)
 	} else {
 		fmt.Println("Illegal move!")
 	}
