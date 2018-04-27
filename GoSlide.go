@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"time"
+	"math/rand"
 	
 	"github.com/nsf/termbox-go"
 )
@@ -90,11 +92,24 @@ func playerMove(move int) {
 	}
 }
 
+func shuffle() {
+	for i := 0; i < 20; {
+		move := rand.Intn(3)
+		if checkMoveLegal(&move) {
+			slide(&move)
+			drawBoard()
+			time.Sleep(300 * time.Millisecond)
+			i++
+		}
+	}
+}
+
 func main() {
 	err := termbox.Init()
 	if err != nil {
 		panic(err)
 	}
+	shuffle()
 	for {
 		drawBoard()
 		keyPress := termbox.PollEvent()
